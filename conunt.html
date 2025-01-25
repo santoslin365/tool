@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>計次數網頁</title>
+    <style>
+        body {
+            background-color: black; /* 背景為黑色 */
+            color: white; /* 文字為白色 */
+            font-family: Arial, sans-serif;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .counter {
+            font-size: 3rem;
+            margin-bottom: 20px;
+        }
+        .buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+        .button-row {
+            display: flex;
+            gap: 20px;
+        }
+        button {
+            font-size: 1.5rem;
+            padding: 10px 20px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+            background-color: #4CAF50; /* 按鈕背景顏色 */
+            color: white; /* 按鈕文字顏色 */
+        }
+        button:hover {
+            background-color: #45a049; /* 按鈕懸停時的背景顏色 */
+        }
+        .reset-button {
+            background-color: #f44336; /* 重置按鈕背景顏色 */
+        }
+        .reset-button:hover {
+            background-color: #d32f2f; /* 重置按鈕懸停時的背景顏色 */
+        }
+    </style>
+</head>
+<body>
+    <div class="counter" id="counter">0</div>
+    <div class="buttons">
+        <div class="button-row">
+            <button id="btnPlus1">+1</button>
+            <button id="btnPlus2">+2</button>
+        </div>
+        <div class="button-row">
+            <button id="btnMinus1">-1</button>
+            <button id="btnMinus2">-2</button>
+        </div>
+        <div class="button-row">
+            <button id="btnReset" class="reset-button">&#x21bb;</button> <!-- 重置符號 -->
+        </div>
+    </div>
+
+    <script>
+        // 初始化計數器
+        let count = 0;
+        const counterElement = document.getElementById('counter');
+
+        // 更新計數器顯示
+        function updateCounter() {
+            counterElement.textContent = count;
+        }
+
+        // 左邊按鈕：+1
+        document.getElementById('btnPlus1').addEventListener('click', () => {
+            count += 1;
+            updateCounter();
+        });
+
+        // 右邊按鈕：+2
+        document.getElementById('btnPlus2').addEventListener('click', () => {
+            count += 2;
+            updateCounter();
+        });
+
+        // 左邊按鈕：-1
+        document.getElementById('btnMinus1').addEventListener('click', () => {
+            count -= 1;
+            updateCounter();
+        });
+
+        // 右邊按鈕：-2
+        document.getElementById('btnMinus2').addEventListener('click', () => {
+            count -= 2;
+            updateCounter();
+        });
+
+        // 重置按鈕
+        document.getElementById('btnReset').addEventListener('click', () => {
+            count = 0;
+            updateCounter();
+        });
+    </script>
+</body>
+</html>
