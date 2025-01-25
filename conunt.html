@@ -15,9 +15,10 @@
             align-items: center;
             height: 100vh;
             margin: 0;
+            position: relative;
         }
         .counter {
-            font-size: 3rem;
+            font-size: 9rem; /* 加大為原來的 3 倍 */
             margin-bottom: 20px;
         }
         .buttons {
@@ -32,15 +33,17 @@
         }
         button {
             font-size: 1.5rem;
-            padding: 10px 20px;
+            padding: 15px 30px; /* 統一按鈕大小 */
             cursor: pointer;
             border: none;
             border-radius: 5px;
-            background-color: #4CAF50; /* 按鈕背景顏色 */
+            background-color: #4CAF50; /* 一般按鈕背景顏色 */
             color: white; /* 按鈕文字顏色 */
+            width: 120px; /* 統一按鈕寬度 */
+            text-align: center;
         }
         button:hover {
-            background-color: #45a049; /* 按鈕懸停時的背景顏色 */
+            background-color: #45a049; /* 一般按鈕懸停時的背景顏色 */
         }
         .reset-button {
             background-color: #f44336; /* 重置按鈕背景顏色 */
@@ -48,10 +51,34 @@
         .reset-button:hover {
             background-color: #d32f2f; /* 重置按鈕懸停時的背景顏色 */
         }
+        .saved-counts {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 1.2rem;
+        }
+        .clear-button {
+            margin-top: 10px;
+            background-color: #ff9800; /* 清除按鈕背景顏色 */
+        }
+        .clear-button:hover {
+            background-color: #e68900; /* 清除按鈕懸停時的背景顏色 */
+        }
     </style>
 </head>
 <body>
+    <!-- 顯示儲存的計數 -->
+    <div class="saved-counts" id="savedCounts">
+        <div>第一次計數：<span id="firstCount">0</span></div>
+        <div>第二次計數：<span id="secondCount">0</span></div>
+        <div>第三次計數：<span id="thirdCount">0</span></div>
+        <button id="btnClear" class="clear-button">清除</button> <!-- 清除按鈕 -->
+    </div>
+
+    <!-- 當前計數器 -->
     <div class="counter" id="counter">0</div>
+
+    <!-- 操作按鈕 -->
     <div class="buttons">
         <div class="button-row">
             <button id="btnPlus1">+1</button>
@@ -62,7 +89,8 @@
             <button id="btnMinus2">-2</button>
         </div>
         <div class="button-row">
-            <button id="btnReset" class="reset-button">&#x21bb;</button> <!-- 重置符號 -->
+            <button id="btnSave">儲存</button> <!-- 儲存按鈕 -->
+            <button id="btnReset" class="reset-button">&#x21bb;</button> <!-- 重置按鈕 -->
         </div>
     </div>
 
@@ -71,10 +99,28 @@
         let count = 0;
         const counterElement = document.getElementById('counter');
 
+        // 初始化儲存的計數
+        let savedCounts = JSON.parse(localStorage.getItem('savedCounts')) || [0, 0, 0];
+        const firstCountElement = document.getElementById('firstCount');
+        const secondCountElement = document.getElementById('secondCount');
+        const thirdCountElement = document.getElementById('thirdCount');
+
         // 更新計數器顯示
         function updateCounter() {
             counterElement.textContent = count;
         }
+
+        // 更新儲存的計數顯示
+        function updateSavedCounts() {
+            firstCountElement.textContent = savedCounts[0];
+            secondCountElement.textContent = savedCounts[1];
+            thirdCountElement.textContent = savedCounts[2];
+            localStorage.setItem('savedCounts', JSON.stringify(savedCounts));
+        }
+
+        // 初始化時更新顯示
+        updateCounter();
+        updateSavedCounts();
 
         // 左邊按鈕：+1
         document.getElementById('btnPlus1').addEventListener('click', () => {
@@ -104,6 +150,20 @@
         document.getElementById('btnReset').addEventListener('click', () => {
             count = 0;
             updateCounter();
+        });
+
+        // 儲存按鈕
+        document.getElementById('btnSave').addEventListener('click', () => {
+            // 將計數值儲存到第一次計數，並將舊值往後推移
+            savedCounts = [count, savedCounts[0], savedCounts[1]];
+            updateSavedCounts();
+        });
+
+        // 清除按鈕
+        document.getElementById('btnClear').addEventListener('click', () => {
+            // 清除儲存的計數值
+            savedCounts = [0, 0, 0];
+            updateSavedCounts();
         });
     </script>
 </body>
